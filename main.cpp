@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+
+#include "histogram.h"
 using namespace std;
 
 const size_t SCREEN_WIDTH = 80;
@@ -40,6 +42,7 @@ show_histogram_svg(const vector<size_t>& bins) {
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
+
     size_t max_bin = bins[0];
     for (size_t j : bins)
     {
@@ -49,15 +52,15 @@ show_histogram_svg(const vector<size_t>& bins) {
 
     double top = 0;
     for (size_t bin : bins) {
-        if(bin== max_bin){
-            svg_text(TEXT_LEFT, top+TEXT_BASELINE , to_string(bin));
-            svg_rect(TEXT_WIDTH, top,IMAGE_WIDTH, BIN_HEIGHT,"black","yellow");
+         if(bin==max_bin){
+                svg_text(TEXT_LEFT, top+TEXT_BASELINE, to_string(max_bin));
+                svg_rect(TEXT_WIDTH, top,IMAGE_WIDTH, BIN_HEIGHT);
         }
-         else{
-            svg_text(TEXT_LEFT, top+TEXT_BASELINE , to_string(bin));
-            svg_rect(TEXT_WIDTH, top,bin*IMAGE_WIDTH/max_bin, BIN_HEIGHT);
-         }
-            top += BIN_HEIGHT;
+             else{
+                svg_text(TEXT_LEFT, top+TEXT_BASELINE, to_string(bin));
+                svg_rect(TEXT_WIDTH, top,IMAGE_WIDTH*bin/max_bin , BIN_HEIGHT,"black","green");
+             }
+        top += BIN_HEIGHT;
     }
     svg_end();
 
@@ -70,21 +73,6 @@ input_numbers(size_t count) {
         cin >> result[i];
     }
     return result;
-}
-
-void
-find_minmax(vector<double> numbers, double& min, double& max) {
-    min = numbers[0];
-    max = numbers[0];
-    for (double x : numbers)
-    {
-        if (x < min)
-            min = x;
-
-        if (x > max)
-            max = x;
-    }
-    return;
 }
 
 vector<size_t>
