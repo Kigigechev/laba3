@@ -80,13 +80,24 @@ show_histogram_text(const vector<size_t>& bins) {
 
 int main() {
     size_t number_count;
+    cerr<<"Enter number count:";
     cin >> number_count;
     const auto numbers = input_numbers(number_count);
     size_t bin_count;
+    cerr<<"Enter bin count:";
     cin >> bin_count;
+    size_t font_size=30;
+    cerr<<"Enter font size:";
+    cin >> font_size;
+    while(font_size<8 || font_size>32)
+    {
+        cerr<<"The font size can have values from 8 to 32!!!!!!"<<endl
+        <<"Enter the font size:";
+        cin >> font_size;
+    }
 
     const auto bins = make_histogram(numbers, bin_count);
     //show_histogram_text(bins);
-     show_histogram_svg(bins);
+     show_histogram_svg(bins,font_size);
     return 0;
 }
