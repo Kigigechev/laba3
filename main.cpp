@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <curl/curl.h>
+#include <sstream>
+
 
 #include "histogram.h"
 #include "svg.h"
@@ -33,14 +35,14 @@ if(prompt)
      return data;
 }
 
-
-int main(int argc, char* argv[]) {
-    curl_global_init(CURL_GLOBAL_ALL);
-     if (argc>1){
-         CURL *curl = curl_easy_init();
-        if(curl){
+Input
+download(const string& address) {
+    stringstream buffer;
+     curl_global_init(CURL_GLOBAL_ALL);
+     CURL *curl = curl_easy_init();
+      if(curl){
             CURLcode res;
-            curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
+            curl_easy_setopt(curl, CURLOPT_URL,address.c_str());
             res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
                 cout << curl_easy_strerror(res);
@@ -48,8 +50,16 @@ int main(int argc, char* argv[]) {
                }
             curl_easy_cleanup(curl);
         }
-    }
-    const auto input = read_input(cin,true);
+    return read_input(buffer, false);
+}
+
+int main(int argc, char* argv[]) {
+    Input input;
+     if (argc>1){
+        input = download(argv[1]);
+        } else {
+        input = read_input(cin, true);
+        }
     const auto bins = make_histogram(input);
     //show_histogram_text(bins);
      show_histogram_svg(bins);
