@@ -6,6 +6,7 @@
 
 #include "histogram.h"
 #include "svg.h"
+
 using namespace std;
 
 string
@@ -20,8 +21,12 @@ make_info_text() {
     DWORD version_minor = version>>8;
     DWORD build;
     if((platform&0x80000000)==0 ) build=platform;
-    cout<<"Windows v"<<version_major<<"."<<version_minor<<" (build "<<build<<")";
-    // TODO: получить имя компьютера, записать в буфер.
+
+    char DNS[MAX_COMPUTERNAME_LENGTH+1];
+    DWORD size=MAX_COMPUTERNAME_LENGTH+1;
+    GetComputerName(DNS,&size);
+    cout<<"Windows v"<<version_major<<"."<<version_minor<<" (build "<<build<<")"
+    <<endl<<"\nComputer name "<<DNS;
     return buffer.str();
 }
 vector<double>
