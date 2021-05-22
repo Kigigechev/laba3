@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <windows.h>
 
 #include "histogram.h"
 #include "svg.h"
@@ -10,9 +11,12 @@ using namespace std;
 string
 make_info_text() {
     stringstream buffer;
-    // TODO: получить версию системы, записать в буфер.
+    DWORD info= GetVersion();
+    DWORD mask = 0b00000000'00000000'11111111'11111111;
+    DWORD version = info & mask;
+    cout<<version<<endl;
     // TODO: получить имя компьютера, записать в буфер.
-    return buffer.str();
+    return 0;//buffer.str();
 }
 vector<double>
 input_numbers(size_t count) {
@@ -24,6 +28,7 @@ input_numbers(size_t count) {
 }
 
 int main() {
+    make_info_text();/*
     size_t number_count;
     cin >> number_count;
     const auto numbers = input_numbers(number_count);
@@ -32,6 +37,6 @@ int main() {
 
     const auto bins = make_histogram(numbers, bin_count);
     //show_histogram_text(bins);
-     show_histogram_svg(bins);
+     show_histogram_svg(bins);*/
     return 0;
 }
