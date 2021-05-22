@@ -13,10 +13,14 @@ make_info_text() {
     stringstream buffer;
     DWORD info= GetVersion();
     DWORD mask = 0b00000000'00000000'11111111'11111111;
+    mask = 0x0000ffff;
     DWORD version = info & mask;
-    cout<<version<<endl;
+    DWORD platform = info >> 16;
+    DWORD version_major = version & 0x00ff;
+    DWORD version_minor = version>>8;
+
     // TODO: получить имя компьютера, записать в буфер.
-    return 0;//buffer.str();
+    return buffer.str();
 }
 vector<double>
 input_numbers(size_t count) {
