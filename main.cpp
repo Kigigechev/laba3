@@ -50,12 +50,16 @@ download(const string& address) {
      CURL *curl = curl_easy_init();
       if(curl){
             CURLcode res;
+            char *ip;
             curl_easy_setopt(curl, CURLOPT_URL,address.c_str());
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
             res = curl_easy_perform(curl);
             if (res != CURLE_OK) {
-                cout << curl_easy_strerror(res);
+                //cout << address<<endl;
+                //cout << curl_easy_strerror(res)<<endl;
+                curl_easy_getinfo(curl, CURLINFO_PRIMARY_IP, &ip));
+                printf("IP: %s\n", ip);
                 exit(1);
                }
             curl_easy_cleanup(curl);
