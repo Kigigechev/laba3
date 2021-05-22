@@ -18,7 +18,9 @@ make_info_text() {
     DWORD platform = info >> 16;
     DWORD version_major = version & 0x00ff;
     DWORD version_minor = version>>8;
-
+    DWORD build;
+    if((platform&0x80000000)==0 ) build=platform;
+    cout<<"Windows v"<<version_major<<"."<<version_minor<<" (build "<<build<<")";
     // TODO: получить имя компьютера, записать в буфер.
     return buffer.str();
 }
