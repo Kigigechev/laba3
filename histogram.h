@@ -7,6 +7,9 @@ struct Input {
     size_t bin_count;
 };
 void find_minmax(vector<double> numbers, double& min, double& max) ;
+
 vector<size_t> make_histogram(Input data);
+
 void show_histogram_text(const vector<size_t>& bins);
+
 #endif // HISTOGRAM_H_INCLUDED

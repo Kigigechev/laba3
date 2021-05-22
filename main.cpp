@@ -1,12 +1,12 @@
-#include <iostream>
 #include <vector>
 #include <string>
 #include <curl/curl.h>
-#include <sstream>
-
+#include <iostream>
+#include<sstream>
 
 #include "histogram.h"
 #include "svg.h"
+
 using namespace std;
 
 vector<double>
@@ -58,7 +58,7 @@ download(const string& address) {
             if (res != CURLE_OK) {
                 //cout << address<<endl;
                 //cout << curl_easy_strerror(res)<<endl;
-                curl_easy_getinfo(curl, CURLINFO_PRIMARY_IP, &ip));
+                curl_easy_getinfo(curl,CURLINFO_PRIMARY_IP, &ip);
                 printf("IP: %s\n", ip);
                 exit(1);
                }
@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
         } else {
         input = read_input(cin, true);
         }
+
     const auto bins = make_histogram(input);
     //show_histogram_text(bins);
      show_histogram_svg(bins);

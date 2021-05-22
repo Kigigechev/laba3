@@ -1,5 +1,7 @@
 #include<iostream>
 #include<vector>
+#include <sstream>
+#include <windows.h>
 using namespace std;
 void
 svg_begin(double width, double height) {
@@ -25,6 +27,27 @@ void svg_rect(double x, double y, double width, double height,
     cout << "<rect x='" << x << "' y='" << y << "' width='" << width << "' height='" << height << "' stroke='" << stroke << "' fill='" << fill << "'/>";
 }
 
+string
+make_info_text() {
+    std::stringstream buffer;
+    DWORD info= GetVersion();
+    DWORD mask = 0b00000000'00000000'11111111'11111111;
+    mask = 0x0000ffff;
+    DWORD version = info & mask;
+    DWORD platform = info >> 16;
+    DWORD version_major = version & 0x00ff;
+    DWORD version_minor = version>>8;
+    DWORD build;
+    if((platform&0x80000000)==0 ) build=platform;
+
+    char DNS[MAX_COMPUTERNAME_LENGTH+1];
+    DWORD size=MAX_COMPUTERNAME_LENGTH+1;
+    GetComputerName(DNS,&size);
+    buffer<<"Windows v"<<version_major<<"."<<version_minor<<" (build "<<build<<")"
+    <<endl<<"\nComputer name "<<DNS;
+    return buffer.str();
+}
+
 void
 show_histogram_svg(const vector<size_t>& bins) {
     const auto IMAGE_WIDTH = 400;
@@ -45,16 +68,17 @@ show_histogram_svg(const vector<size_t>& bins) {
 
     double top = 0;
     for (size_t bin : bins) {
+                svg_text(TEXT_LEFT, top+TEXT_BASELINE, to_string(bin));
          if(bin==max_bin){
-                svg_text(TEXT_LEFT, top+TEXT_BASELINE, to_string(max_bin));
                 svg_rect(TEXT_WIDTH, top,IMAGE_WIDTH, BIN_HEIGHT);
         }
              else{
-                svg_text(TEXT_LEFT, top+TEXT_BASELINE, to_string(bin));
                 svg_rect(TEXT_WIDTH, top,IMAGE_WIDTH*bin/max_bin , BIN_HEIGHT,"black","green");
              }
         top += BIN_HEIGHT;
     }
+    string InfoText=make_info_text();
+    svg_text(TEXT_LEFT, top+TEXT_BASELINE,InfoText );
     svg_end();
 
 }
